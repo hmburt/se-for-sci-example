@@ -1,0 +1,19 @@
+name: CD
+
+on:
+  workflow_dispatch:
+  releases:
+    types:
+      - publish
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - runs: pipx run build
+      
+      - uses: actions/upload-artifact@v3
+        with:
+          path: dist/*
