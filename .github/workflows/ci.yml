@@ -1,13 +1,25 @@
+name: CI
+
 on:
   pull_request:
   push:
     branches:
       - main
       
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
       
 jobs:
   tests:
-    runs-on: ubuntu-latest
+    name: Test${{ matrix.runs-on }}
+    runs-on: ${{ matrix.runs-on }}
+    strategy:
+      fail-fast: false
+      matrix:
+        runs-on:
+          - ubuntu-latest
+          - windows-latest
     steps:
       - uses: actions/checkout@v3
       
